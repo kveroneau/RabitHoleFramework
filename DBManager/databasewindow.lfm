@@ -1,0 +1,41 @@
+object DatabaseForm: TDatabaseForm
+  Left = 314
+  Height = 416
+  Top = 30
+  Width = 762
+  Caption = 'RabitHole Database Manager'
+  ClientHeight = 386
+  ClientWidth = 762
+  Menu = MainMenu
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 363
+    Width = 762
+    Panels = <>
+    SimpleText = 'Ready.'
+  end
+  object MainMenu: TMainMenu
+    Left = 576
+    Top = 176
+    object FileMenu: TMenuItem
+      Caption = '&File'
+      object ExportMenu: TMenuItem
+        Caption = 'Export Database...'
+      end
+      object Separator1: TMenuItem
+        Caption = '-'
+      end
+      object ExitMenu: TMenuItem
+        Caption = 'E&xit'
+      end
+    end
+    object HelpMenu: TMenuItem
+      Caption = '&Help'
+      object AboutMenu: TMenuItem
+        Caption = '&About'
+        OnClick = AboutMenuClick
+      end
+    end
+  end
+end
