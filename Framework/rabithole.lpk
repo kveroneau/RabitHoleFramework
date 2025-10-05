@@ -18,6 +18,10 @@
         <Filename Value="rbapp.pas"/>
         <UnitName Value="rbapp"/>
       </Item>
+      <Item>
+        <Filename Value="rbmodels.pas"/>
+        <UnitName Value="rbmodels"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>

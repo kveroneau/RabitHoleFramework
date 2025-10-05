@@ -7,6 +7,7 @@ object DatabaseForm: TDatabaseForm
   ClientHeight = 386
   ClientWidth = 762
   Menu = MainMenu
+  OnResize = FormResize
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
@@ -15,6 +16,32 @@ object DatabaseForm: TDatabaseForm
     Panels = <>
     SimpleText = 'Ready.'
   end
+  object Tabs: TPageControl
+    Left = 0
+    Height = 352
+    Top = 0
+    Width = 696
+    ActivePage = GlobalsTab
+    TabIndex = 0
+    TabOrder = 1
+    OnResize = TabsResize
+    object GlobalsTab: TTabSheet
+      Caption = 'Global Variables'
+      ClientHeight = 317
+      ClientWidth = 690
+      OnResize = GlobalsTabResize
+      object GlobalsGrid: TDBGrid
+        Left = 0
+        Height = 264
+        Top = 0
+        Width = 432
+        Color = clWindow
+        Columns = <>
+        DataSource = DBModels.GlobalsDS
+        TabOrder = 0
+      end
+    end
+  end
   object MainMenu: TMainMenu
     Left = 576
     Top = 176
@@ -22,6 +49,7 @@ object DatabaseForm: TDatabaseForm
       Caption = '&File'
       object ExportMenu: TMenuItem
         Caption = 'Export Database...'
+        OnClick = ExportMenuClick
       end
       object Separator1: TMenuItem
         Caption = '-'

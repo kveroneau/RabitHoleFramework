@@ -1,3 +1,7 @@
+backup/
+lib/
+js/
 *.lps
 *.js
 *.js.map
+DBManager/DBManager

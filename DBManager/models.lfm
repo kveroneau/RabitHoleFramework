@@ -1,0 +1,46 @@
+object DBModels: TDBModels
+  OldCreateOrder = False
+  Height = 324
+  HorizontalOffset = 314
+  VerticalOffset = 30
+  Width = 470
+  object GlobalsDBF: TDbf
+    DateTimeHandling = dtDateTime
+    FilePath = 'data/'
+    IndexDefs = <    
+      item
+        IndexFile = 'GLOBAL_KEYS'
+        SortField = 'KEY'
+        Options = [ixPrimary, ixUnique, ixCaseInsensitive]
+      end    
+      item
+        IndexFile = 'GLOBAL_KEY'
+        SortField = 'KEY'
+        Options = [ixPrimary, ixExpression]
+      end>
+    OpenMode = omAutoCreate
+    StoreDefs = True
+    TableName = 'globals'
+    TableLevel = 4
+    Active = True
+    FieldDefs = <    
+      item
+        Name = 'KEY'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'VALUE'
+        DataType = ftString
+        Size = 80
+      end>
+    FilterOptions = []
+    Left = 31
+    Top = 24
+  end
+  object GlobalsDS: TDataSource
+    DataSet = GlobalsDBF
+    Left = 31
+    Top = 80
+  end
+end

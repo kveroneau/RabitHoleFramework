@@ -3,7 +3,7 @@ program example01;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, rbapp;
+  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels;
 
 type
 
@@ -12,6 +12,8 @@ type
   TExample1 = class(TRabitHoleApp)
   protected
     procedure DoRun; override;
+    procedure DoFailure(aMessage: string); override;
+    procedure GlobalsLoaded; override;
   public
   end;
 
@@ -28,9 +30,21 @@ begin
      is optional. }}
 end;
 
+procedure TExample1.DoFailure(aMessage: string);
+begin
+  GetHTMLElement('content').innerHTML:=aMessage;
+end;
+
+procedure TExample1.GlobalsLoaded;
+begin
+  GetHTMLElement('content').innerHTML:=GetGlobal('test');
+end;
+
 begin
   Application:=TExample1.Create(nil);
   Application.Initialize;
-  Application.TabID:='tabs';
+  Application.DBFile:='website';
+  Application.SaveFlags:=True;
+  {Application.TabID:='tabs';}
   Application.Run;
 end.

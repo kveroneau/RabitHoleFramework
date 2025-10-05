@@ -10,7 +10,7 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, DatabaseWindow
+  Forms, DatabaseWindow, models
   { you can add units after this };
 
 {$R *.res}
@@ -24,6 +24,7 @@ begin
   {$POP}
   Application.Initialize;
   Application.CreateForm(TDatabaseForm, DatabaseForm);
+  Application.CreateForm(TDBModels, DBModels);
   Application.Run;
 end.
 

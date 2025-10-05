@@ -52,9 +52,11 @@
             </Options>
           </Linking>
           <Other>
-            <CustomOptions Value="-dDEBUG"/>
-            <OtherDefines Count="1">
+            <CustomOptions Value="-dDEBUG
+-dDATABASE"/>
+            <OtherDefines Count="2">
               <Define0 Value="DEBUG"/>
+              <Define1 Value="DATABASE"/>
             </OtherDefines>
           </Other>
         </CompilerOptions>
@@ -100,6 +102,15 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="klib"/>
+      </Item>
+      <Item>
+        <PackageName Value="FCL"/>
+      </Item>
+      <Item>
+        <PackageName Value="DBFLaz"/>
+      </Item>
+      <Item>
         <PackageName Value="LCL"/>
       </Item>
     </RequiredPackages>
@@ -112,8 +123,15 @@
         <Filename Value="databasewindow.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="DatabaseForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DatabaseWindow"/>
+      </Unit>
+      <Unit>
+        <Filename Value="models.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DBModels"/>
+        <ResourceBaseClass Value="DataModule"/>
       </Unit>
     </Units>
   </ProjectOptions>
