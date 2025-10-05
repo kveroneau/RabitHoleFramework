@@ -4,4 +4,5 @@ js/
 *.lps
 *.js
 *.js.map
+*.json
 DBManager/DBManager

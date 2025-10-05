@@ -20,7 +20,7 @@ object DBModels: TDBModels
       end>
     OpenMode = omAutoCreate
     StoreDefs = True
-    TableName = 'globals'
+    TableName = 'globals.dbf'
     TableLevel = 4
     Active = True
     FieldDefs = <    

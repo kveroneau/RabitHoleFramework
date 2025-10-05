@@ -1,1 +1,0 @@
-{ "globals" : { "metaData" : { "fields" : [{ "name" : "KEY", "type" : "string" }, { "name" : "VALUE", "type" : "string" }], "root" : "Data" }, "Data" : [{ "KEY" : "test", "VALUE" : "Hello World from the Rabit Hole Web Framework!" }] }, "tables" : ["globals"] }
