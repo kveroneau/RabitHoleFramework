@@ -18,7 +18,6 @@ type
   TRabitHoleApp = class(TBrowserApplication)
   private
     FDBFile: string;
-    FTabs: TBulmaTabs;
     FTabID: string;
     FDatabaseType: TDatabaseType;
     FDatabase: TJSONDatabase;
@@ -30,6 +29,7 @@ type
     procedure DatabaseFailed;
     procedure RestoreGlobals;
   protected
+    FTabs: TBulmaTabs;
     procedure DoRun; override;
     procedure DoFailure(aMessage: string); virtual; abstract;
     procedure GlobalsLoaded; virtual; abstract;

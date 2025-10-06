@@ -22,6 +22,10 @@
         <Filename Value="rbmodels.pas"/>
         <UnitName Value="rbmodels"/>
       </Item>
+      <Item>
+        <Filename Value="rbpage.pas"/>
+        <UnitName Value="rbpage"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>
