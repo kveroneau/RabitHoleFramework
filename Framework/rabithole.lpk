@@ -30,7 +30,7 @@
     <RequiredPkgs>
       <Item>
         <PackageName Value="jslib"/>
-        <MinVersion Minor="8" Valid="True"/>
+        <MinVersion Minor="9" Valid="True"/>
       </Item>
       <Item>
         <PackageName Value="FCL"/>
