@@ -5,7 +5,7 @@ unit rbapp;
 interface
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, bulma, jsontable, rbmodels;
+  BrowserApp, JS, Classes, SysUtils, Web, bulma, jsontable, rbmodels, rbvfs;
 
 type
 
@@ -23,21 +23,26 @@ type
     FDatabase: TJSONDatabase;
     FFlags: TStringList;
     FSaveFlags: Boolean;
+    FVFSTable: string;
     procedure SetDBFile(AValue: string);
     procedure SetTabID(AValue: string);
     procedure DatabaseLoaded;
     procedure DatabaseFailed;
     procedure RestoreGlobals;
+    procedure SetVFSTable(AValue: string);
   protected
     FTabs: TBulmaTabs;
     procedure DoRun; override;
     procedure DoFailure(aMessage: string); virtual; abstract;
     procedure GlobalsLoaded; virtual; abstract;
+    procedure VFSLoaded; virtual;
+    procedure VFSFailed; virtual;
   public
     property TabID: string read FTabID write SetTabID;
     property DatabaseType: TDatabaseType read FDatabaseType write FDatabaseType;
     property DBFile: string read FDBFile write SetDBFile;
     property SaveFlags: Boolean read FSaveFlags write FSaveFlags;
+    property VFSTable: string read FVFSTable write SetVFSTable;
     constructor Create(aOwner: TComponent); override;
     procedure SaveGlobals;
     procedure AddFlag(AFlag: string);
@@ -65,6 +70,11 @@ begin
   if not Assigned(RabitVars) then
     RabitVars:=FDatabase.Table['globals'];
   GlobalsLoaded;
+  if FVFSTable <> '' then
+  begin
+    WebVFS:=FDatabase.Table[FVFSTable];
+    VFSLoaded;
+  end;
 end;
 
 procedure TRabitHoleApp.DatabaseFailed;
@@ -93,6 +103,14 @@ begin
   end;
 end;
 
+procedure TRabitHoleApp.SetVFSTable(AValue: string);
+begin
+  if Assigned(WebVFS) then
+    Exit;
+  if FVFSTable=AValue then Exit;
+  FVFSTable:=AValue;
+end;
+
 procedure TRabitHoleApp.SetDBFile(AValue: string);
 begin
   if Assigned(FDatabase) then
@@ -116,6 +134,14 @@ begin
       RabitVars.OnSuccess:=@GlobalsLoaded;
       RabitVars.OnFailure:=@DatabaseFailed;
       RabitVars.Active:=True;
+      if FVFSTable <> '' then
+      begin
+        WebVFS:=TJSONTable.Create(Self);
+        WebVFS.Datafile:=FVFSTable;
+        WebVFS.OnSuccess:=@VFSLoaded;
+        WebVFS.OnFailure:=@VFSFailed;
+        WebVFS.Active:=True;
+      end;
     end;
   end
   else if FDatabaseType = dtDatabase then
@@ -128,12 +154,23 @@ begin
   end;
 end;
 
+procedure TRabitHoleApp.VFSLoaded;
+begin
+  { Should be overridden in subclass to perform something once the VFS is ready. }
+end;
+
+procedure TRabitHoleApp.VFSFailed;
+begin
+  DoFailure('VFS Failed to load.');
+end;
+
 constructor TRabitHoleApp.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   FTabs:=Nil;
   FDatabaseType:=dtTable;
   FFlags:=TStringList.Create;
+  FVFSTable:='';
 end;
 
 procedure TRabitHoleApp.SaveGlobals;

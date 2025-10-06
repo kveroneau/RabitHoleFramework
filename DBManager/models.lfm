@@ -43,4 +43,55 @@ object DBModels: TDBModels
     Left = 31
     Top = 80
   end
+  object VFSDBF: TDbf
+    DateTimeHandling = dtDateTime
+    FilePath = 'data/'
+    IndexDefs = <    
+      item
+        IndexFile = 'VFSTITLE'
+        SortField = 'TITLE'
+        Options = [ixCaseInsensitive]
+      end    
+      item
+        IndexFile = 'VFSWH'
+        SortField = 'WH'
+        Options = []
+      end>
+    OpenMode = omAutoCreate
+    StoreDefs = True
+    TableName = 'webvfs.dbf'
+    TableLevel = 7
+    Active = True
+    FieldDefs = <    
+      item
+        Name = 'TITLE'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'TYP'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'CREATED'
+        DataType = ftDateTime
+      end    
+      item
+        Name = 'WH'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'DATA'
+        DataType = ftMemo
+      end>
+    FilterOptions = []
+    Left = 136
+    Top = 24
+  end
+  object VFSDS: TDataSource
+    DataSet = VFSDBF
+    Left = 135
+    Top = 80
+  end
 end

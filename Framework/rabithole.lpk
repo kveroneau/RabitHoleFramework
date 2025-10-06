@@ -26,6 +26,10 @@
         <Filename Value="rbpage.pas"/>
         <UnitName Value="rbpage"/>
       </Item>
+      <Item>
+        <Filename Value="rbvfs.pas"/>
+        <UnitName Value="rbvfs"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>

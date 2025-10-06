@@ -3,7 +3,7 @@ program example01;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels, rbpage, bulma;
+  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels, rbpage, bulma, rbvfs;
 
 type
 
@@ -15,6 +15,7 @@ type
     procedure HomeTab;
     procedure DoVisitorName;
     procedure ExampleTab;
+    procedure ShowVFS(data: string);
     procedure AboutTab;
   protected
     procedure DoRun; override;
@@ -79,9 +80,17 @@ begin
   end;
 end;
 
+procedure TExample1.ShowVFS(data: string);
+begin
+  { This is the callback used with the GetVFSFile API call. }
+  TabBody.Write(data);
+end;
+
 procedure TExample1.AboutTab;
 begin
   TabBody.setContent('This an example for the Rabit Hole web Framework.');
+  { This an example of using the contents of a file in the VFS. }
+  GetVFSFile('Welcome', 'FSRoot', @ShowVFS);
 end;
 
 procedure TExample1.DoRun;
@@ -124,6 +133,7 @@ begin
   { This initializes the application class, and sets up some settings. }
   Application:=TExample1.Create(nil);
   Application.Initialize;
+  Application.VFSTable:='vfs'; { Enables VFS support. }
   Application.DBFile:='website'; { Here we specify a database for the application to use. }
   Application.SaveFlags:=True; { This will allow the saving of the flags which get set. }
   Application.TabID:='RBTabs'; { Bulma specific, allows the app to manage the tabs, not required. }

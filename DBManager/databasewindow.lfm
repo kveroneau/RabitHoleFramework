@@ -8,6 +8,7 @@ object DatabaseForm: TDatabaseForm
   ClientWidth = 762
   Menu = MainMenu
   OnResize = FormResize
+  OnShow = FormShow
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
@@ -21,8 +22,8 @@ object DatabaseForm: TDatabaseForm
     Height = 352
     Top = 0
     Width = 696
-    ActivePage = GlobalsTab
-    TabIndex = 0
+    ActivePage = VFSTab
+    TabIndex = 1
     TabOrder = 1
     OnResize = TabsResize
     object GlobalsTab: TTabSheet
@@ -41,10 +42,147 @@ object DatabaseForm: TDatabaseForm
         TabOrder = 0
       end
     end
+    object VFSTab: TTabSheet
+      Caption = 'File System'
+      ClientHeight = 317
+      ClientWidth = 690
+      OnResize = VFSTabResize
+      object VFSTree: TTreeView
+        Left = 0
+        Height = 312
+        Top = 0
+        Width = 264
+        Images = IconList
+        ImagesWidth = 16
+        PopupMenu = VFSMenu
+        ReadOnly = True
+        StateImages = IconList
+        StateImagesWidth = 16
+        TabOrder = 0
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        OnDblClick = VFSTreeDblClick
+      end
+      object Label1: TLabel
+        Left = 272
+        Height = 18
+        Top = 14
+        Width = 33
+        Caption = 'Title:'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 272
+        Height = 18
+        Top = 48
+        Width = 60
+        Caption = 'Location:'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 272
+        Height = 18
+        Top = 88
+        Width = 35
+        Caption = 'Type:'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label4: TLabel
+        Left = 272
+        Height = 18
+        Top = 128
+        Width = 55
+        Caption = 'Created:'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 272
+        Height = 18
+        Top = 160
+        Width = 66
+        Caption = 'URL/Data:'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object VFSTitle: TDBEdit
+        Left = 360
+        Height = 32
+        Top = 8
+        Width = 240
+        DataField = 'TITLE'
+        DataSource = DBModels.VFSDS
+        MaxLength = 40
+        TabOrder = 1
+      end
+      object VFSLocation: TDBEdit
+        Left = 360
+        Height = 32
+        Top = 48
+        Width = 240
+        DataField = 'WH'
+        DataSource = DBModels.VFSDS
+        MaxLength = 40
+        TabOrder = 2
+      end
+      object VFSType: TComboBox
+        Left = 360
+        Height = 32
+        Top = 88
+        Width = 240
+        ItemHeight = 24
+        ItemIndex = 0
+        Items.Strings = (
+          'Plain Text'
+          'Directory'
+          'HTML'
+        )
+        Style = csDropDownList
+        TabOrder = 3
+        Text = 'Plain Text'
+      end
+      object VFSCreated: TLabel
+        Left = 360
+        Height = 18
+        Top = 128
+        Width = 70
+        Caption = 'VFSCreated'
+      end
+      object VFSData: TMemo
+        Left = 360
+        Height = 144
+        Top = 160
+        Width = 240
+        Lines.Strings = (
+          'VFSData'
+        )
+        TabOrder = 4
+      end
+      object SaveVFSBtn: TButton
+        Left = 608
+        Height = 25
+        Top = 232
+        Width = 75
+        Caption = 'Save'
+        TabOrder = 5
+        OnClick = SaveVFSBtnClick
+      end
+      object CancelVFSBtn: TButton
+        Left = 608
+        Height = 25
+        Top = 272
+        Width = 75
+        Caption = 'Cancel'
+        TabOrder = 6
+        OnClick = CancelVFSBtnClick
+      end
+    end
   end
   object MainMenu: TMainMenu
-    Left = 576
-    Top = 176
+    Left = 640
+    Top = 40
     object FileMenu: TMenuItem
       Caption = '&File'
       object ExportMenu: TMenuItem
@@ -64,6 +202,77 @@ object DatabaseForm: TDatabaseForm
         Caption = '&About'
         OnClick = AboutMenuClick
       end
+    end
+  end
+  object IconList: TImageList
+    Left = 640
+    Top = 96
+    Bitmap = {
+      4C7A030000001000000010000000990500000000000078DACD967B4C536718C6
+      CF9C8E7F368741973927C9040937610E9C32655B36358BD32DBACD68BC841987
+      28E02D71C16B9C8A843B9239752C11E4A2800C41AA22B738605CA4B4A5801528
+      375BA0B51428B585D2F6D97B0E6453DA2EF68F25FB925FBE376FCFF3BDDFADE7
+      390CC3304E4E4EAF53174004BE24010E0E0E6F32FFB440D8D948B3EE39FDA76C
+      2E3A3A0623231AB4B74B211008D1D0C0477D7D031A1B45A8A9A9E5E2B6B6760C
+      0D0DB3FA0DD3F57AFD18060787303CACA17146394647B5F4FC089E3DD37131CB
+      547D0B7D6C6C3CD56EA77A02D4D6D641246A425D5D3DF87C761EF590481E53FF
+      90C6535BD54F4C18B93A2CE3E3060E836182F2135C3C36364EFDB8CDFA898949
+      DCFA040201ADBD81AB2F1209693E8DD48BD0DBDB0BB1580C9D4E6755CF3683C1
+      00A3D1C8C566B319269389CBB173D0EBF59CD656FD0B172E402E9773B5844221
+      B7175D5DDDE8ECECE4D6DFDADACA9D8342A1B059DF6834717559D858A954A2A0
+      A000F9F9B7909797071E8F676673A4F19FAE4F4E4E864C264777770FA45229B7
+      EEC8C8C8E7AF8D993D3F1F9FF723BCBCBC6658AB6F324DAE995DAF56AB456A6A
+      2A9757ABD5E6478F1EC3D3D3F3B4B3B3F3ABCC8BEDEFFAECFAD9FD6F6B6BA3F3
+      96202A2A8AABDBD1D1090F0F8FA8B973E7CD642CDB0BFBCFDE0376AF552A15ED
+      578D59AFD7C1CD6D71C29C39735E63ACB78F592DBBE6C93D34D25D19A37B3684
+      8E8E0EB8BABA26CE9E3DDBC186967174747C63EA7FF989153EA0DF673176B655
+      F71B5EEEB9E287352BEE376245317F128A032B444D2FA30D2CE533CBEFD42382
+      AEEB51BD11C78993142F2DAC35AF28A6314B8416044C11F847AB981DC3EF4E13
+      C2652358D9AAC42A22483A84C3722D0EF7697180FA70EAC3A80F9169114CEC7E
+      328A5D945B562261EF20E37DAB05DBF903585AD1037FC28FF02DE9804B4A09DE
+      89C9B1607E740E02AE14617E4C01A75F782617FE71F9703A968E79C732381CC3
+      2F626F6E39CA0D40E998791A26548D9B51A499C0D54EC59D9569D5A8330325E3
+      469472982836E3B6661C497D1AC4CA2D49A07CA25287A0F4722CCD152341318A
+      F3B261444D239AF625C60A6C3E5EF90C4199159C3E5EA121FD905D442BB5D891
+      590EDFDC26440F8CE0CC13B55D440E8C625B461996E43421B27F18A77A07EDE2
+      A77E0DB6A4976249AE08E7FA877082C63C6907A71523D89C4E679C5A8F2F6B24
+      585BF9C82EBEA86D875F621E3ECC17E3749F0AC77A9EDAC5499AF3D6AC32B864
+      34F2425AFBB14B2CB78B1F5A07B026E56E36C3BC4BEFD1B782893D4408C3CCDB
+      4BEC23C288F029D8387432CF3EC33D1BCCBCB26819F33FF27F854285A72A3506
+      C9AF85C5C5A8CFC944F5D5CBE017E6938F0C525E43FEAEB6E95F2AF5305A2AAB
+      501E770ACDB949E01D5987BB4737233B78030A0F6D4343FE4D8CEAC66CEA5BAA
+      AA51F5F3713C15FE0E4D5B110497BF86E0D20EDC3EFC39D2BE5982A2439BF167
+      46AA4DFDDDB347D0559608D3480B349234C84B7E44C32F9B70EF4800D2BF5B8C
+      1B3B3F4294F77CABFA3EF2FB07B1FBA114DEC4844A045D57116465A7507996EA
+      EEF740E61617DCD8EE87C2B0759014DEB4D00BB2AEE1DAA64568E79DC760732E
+      069BB2D05E1481DAE48D280C7547C61657DC085A8EC203EB51191F69A9BF7E0D
+      57562F00EF800F7A2A92D19C1586CAF381B817E18FECEF17E3B78DEFE1D78DDE
+      C8DCBD96F6F79C855E46F34F58F636AE6F73C7AD3D6EA88AD9047ECA5EA40579
+      20D4771676B9CEC0F6053311EAEF616EAEAEB6EAFF91DE0B7169F522A47DEB06
+      61E659743FC842DCC1AD2FF8FF387D53F8FAFA44787B795BF8BFB8B41489FE73
+      71F13367A4ACF742772D0F7111C19C90BCD42C91B4C1DDDDDDA6FF1BE99BA589
+      EEDDA5352EC8DEE989AEEA02249FD8C3D5954ABB586D9493936DFF673DDF40DE
+      AF9649C13BB70F1907BF4252C87AF304BDDF5D5D5D12C887FFD5FF9F6F46FA8E
+      D1EAF4E8EE7DF29FFAFF5F4311C945
+    }
+  end
+  object VFSMenu: TPopupMenu
+    Left = 640
+    Top = 152
+    object NewMenu: TMenuItem
+      Caption = 'New'
+      OnClick = NewMenuClick
+    end
+    object DeleteMenu: TMenuItem
+      Caption = 'Delete'
+      OnClick = DeleteMenuClick
+    end
+    object Separator2: TMenuItem
+      Caption = '-'
+    end
+    object RefreshMenu: TMenuItem
+      Caption = 'Refresh Tree'
+      OnClick = RefreshMenuClick
     end
   end
 end
