@@ -16,7 +16,7 @@ And finally, locate the `RabitHole.lpk` package file from within this repository
 
 ### New Pas2Js Web Browser Application skeleton
 
-```
+```pascal
 program example01;
 
 {$mode objfpc}
