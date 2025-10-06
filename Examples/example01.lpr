@@ -3,7 +3,7 @@ program example01;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels, rbpage;
+  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels, rbpage, bulma;
 
 type
 
@@ -11,7 +11,9 @@ type
 
   TExample1 = class(TRabitHoleApp)
   private
+    inp: TBulmaInput;
     procedure HomeTab;
+    procedure DoVisitorName;
     procedure ExampleTab;
     procedure AboutTab;
   protected
@@ -33,10 +35,48 @@ begin
   TabBody.Write('This is an example of the home tab, welcome!');
 end;
 
-procedure TExample1.ExampleTab;
+procedure TExample1.DoVisitorName;
+var
+  visitor: string;
 begin
-  TabBody.setContent('It is best to start with setContent over write...<br/>');
-  TabBody.Write('But, write() can be used after to add additional content.');
+  visitor:=inp.Value;
+  if (visitor = '') or (visitor = 'null') then
+  begin
+    window.alert('It is imparative for this example that you supply your name.');
+    Exit;
+  end;
+  SetGlobal('visitor_name', visitor);
+  ExampleTab; { Re-render the tab. }
+  {SaveGlobals;} { This can be set to also persist it immediately into the browser. }
+end;
+
+procedure TExample1.ExampleTab;
+var
+  visitor: string;
+  btn: TBulmaButton;
+begin
+  { Example of how to use globals. }
+  visitor:=GetGlobal('visitor_name');
+  if visitor = 'null' then
+  begin
+    { This will create a basic form which will call another function in this
+      application code, just above this one actually when clicked.  I hope to
+      make the creation of forms easier than this soon with this framework, as
+      the below might be a bit too difficult for someone. }
+    if Assigned(inp) then
+      inp.Free;
+    inp:=TBulmaInput.Create(Self, 'What is your name?', 'visitor_name');
+    TabBody.setContent(inp.renderHTML);
+    btn:=TBulmaButton.Create(Self, 'Okay', 'okayBtn', @DoVisitorName);
+    TabBody.Write(btn.renderHTML);
+    btn.Bind;
+  end
+  else
+  begin
+    TabBody.setContent('It is best to start with setContent over write...<br/>');
+    TabBody.Write('But, write() can be used after to add additional content.<br/>');
+    TabBody.Write('Oh, hi there '+visitor+', and how are you today?');
+  end;
 end;
 
 procedure TExample1.AboutTab;
