@@ -3,7 +3,8 @@ program example01;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels, rbpage, bulma, rbvfs;
+  BrowserApp, JS, Classes, SysUtils, Web, rbapp, rbmodels, rbpage, bulma, rbvfs,
+  webrouter;
 
 type
 
@@ -21,6 +22,7 @@ type
     procedure DoRun; override;
     procedure DoFailure(aMessage: string); override;
     procedure GlobalsLoaded; override;
+    procedure VFSLoaded; override;
   public
   end;
 
@@ -83,14 +85,17 @@ end;
 procedure TExample1.ShowVFS(data: string);
 begin
   { This is the callback used with the GetVFSFile API call. }
-  TabBody.Write(data);
+  case GetVFSFileType of
+    0: TabBody.setContent('<pre>'+data+'</pre>');
+    2: TabBody.setContent(data);
+  end;
 end;
 
 procedure TExample1.AboutTab;
 begin
   TabBody.setContent('This an example for the Rabit Hole web Framework.');
   { This an example of using the contents of a file in the VFS. }
-  GetVFSFile('Welcome', 'FSRoot', @ShowVFS);
+  GetVFSFile('Documents', 'FSRoot', @ShowVFS);
 end;
 
 procedure TExample1.DoRun;
@@ -102,14 +107,14 @@ begin
   FTabs.AddTab('Example', 'ExampleTab', @ExampleTab);
   FTabs.AddTab('About', 'AboutTab', @AboutTab);
   inherited DoRun;
-  { Inless database has been embeeded into the application, no database or
+  { Unless database has been embeeded into the application, no database or
     any tables, such as any of the globals will be available here. The main
     advantage of using the embedded mode is that you have instant access to
     those databases without any additional loads from the server, allowing
-    some early logic to take place if needed. }
+    some early logic to take place if needed.
   HomeTab;
   {{ Code to run in example after framework is done initialization, although
-     is optional. }}
+     is optional. }} }
 end;
 
 procedure TExample1.DoFailure(aMessage: string);
@@ -126,7 +131,16 @@ begin
   { This is called once the globals have been loaded and are ready to be used,
     this means that it can run before the part after `inherited DoRun;` if the
     globals table is embedded into the application. }
-  TabBody.setContent(GetGlobal('test'));
+  if not EnableRouter then { This may overwrite what the router may write. }
+    TabBody.setContent(GetGlobal('test'));
+end;
+
+procedure TExample1.VFSLoaded;
+begin
+  { Close to be run after the VFS has been loaded and is ready for use. }
+  SetInitVFSCallback(@ShowVFS); { Needs to be set to use router. }
+  if EnableRouter and (Router.RouteFromURL = '') then
+    HomeTab; { This is an example of enabling external links to the site. }
 end;
 
 begin
@@ -134,6 +148,7 @@ begin
   Application:=TExample1.Create(nil);
   Application.Initialize;
   Application.VFSTable:='vfs'; { Enables VFS support. }
+  Application.EnableRouter:=True; { Enables URL routing for use with with VFS directory links. }
   Application.DBFile:='website'; { Here we specify a database for the application to use. }
   Application.SaveFlags:=True; { This will allow the saving of the flags which get set. }
   Application.TabID:='RBTabs'; { Bulma specific, allows the app to manage the tabs, not required. }

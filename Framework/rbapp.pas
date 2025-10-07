@@ -5,7 +5,8 @@ unit rbapp;
 interface
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, bulma, jsontable, rbmodels, rbvfs;
+  BrowserApp, JS, Classes, SysUtils, Web, bulma, jsontable, rbmodels, rbvfs,
+  webrouter;
 
 type
 
@@ -22,7 +23,7 @@ type
     FDatabaseType: TDatabaseType;
     FDatabase: TJSONDatabase;
     FFlags: TStringList;
-    FSaveFlags: Boolean;
+    FSaveFlags, FEnableRouter: Boolean;
     FVFSTable: string;
     procedure SetDBFile(AValue: string);
     procedure SetTabID(AValue: string);
@@ -43,6 +44,7 @@ type
     property DBFile: string read FDBFile write SetDBFile;
     property SaveFlags: Boolean read FSaveFlags write FSaveFlags;
     property VFSTable: string read FVFSTable write SetVFSTable;
+    property EnableRouter: Boolean read FEnableRouter write FEnableRouter;
     constructor Create(aOwner: TComponent); override;
     procedure SaveGlobals;
     procedure AddFlag(AFlag: string);
@@ -151,6 +153,11 @@ begin
     FDatabase.OnSuccess:=@DatabaseLoaded;
     FDatabase.OnFailure:=@DatabaseFailed;
     FDatabase.Active:=True;
+  end;
+  if FEnableRouter then
+  begin
+    Router.InitHistory(hkHash);
+    Router.RegisterRoute('/vfs/:wh/:file', @RouteVFS);
   end;
 end;
 

@@ -133,6 +133,7 @@ begin
   try
     jsondb.Add('globals', ExportDBF(DBModels.GlobalsDBF));
     tables.Add('globals');
+    DBModels.VFSDBF.Filtered:=False;
     jsondb.Add('vfs', ExportDBF(DBModels.VFSDBF));
     tables.Add('vfs');
     jsondb.Add('tables', tables);
@@ -323,6 +324,7 @@ procedure TDatabaseForm.ExportToJSON(DataSet: TDataSet; AFilename: string);
 var
   json: TJSONObject;
 begin
+  DataSet.Filtered:=False;
   json:=ExportDBF(DataSet);
   with TStringStream.Create(json.AsJSON) do
   try
