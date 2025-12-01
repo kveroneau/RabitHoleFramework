@@ -14,6 +14,11 @@
           <Mode Name="Release"/>
         </BuildModes>
       </Target>
+      <Target FileName="Examples/example02.lpi">
+        <BuildModes>
+          <Mode Name="Default"/>
+        </BuildModes>
+      </Target>
     </Targets>
   </ProjectGroup>
 </CONFIG>
