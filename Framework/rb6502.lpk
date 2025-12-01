@@ -18,6 +18,14 @@
         <Filename Value="rbapp6502.pas"/>
         <UnitName Value="rbapp6502"/>
       </Item>
+      <Item>
+        <Filename Value="rbpage6502.pas"/>
+        <UnitName Value="rbpage6502"/>
+      </Item>
+      <Item>
+        <Filename Value="rbvfs6502.pas"/>
+        <UnitName Value="rbvfs6502"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>

@@ -19,6 +19,10 @@ function GetVFSFileType: Integer;
 procedure RouteVFS(URL: string; aRoute: TRoute; Params: TStrings);
 procedure SetInitVFSCallback(ACallback: TVFSFileCallback);
 
+{ Advanced VFS Functions }
+function LocateFile(AFile, ALocation: string): Boolean;
+function GetVFSDataURL: string;
+
 implementation
 
 var
@@ -127,6 +131,20 @@ end;
 procedure SetInitVFSCallback(ACallback: TVFSFileCallback);
 begin
   cb:=ACallback;
+end;
+
+function LocateFile(AFile, ALocation: string): Boolean;
+begin
+  SetCurDir(ALocation);
+  if WebVFS.DataSet.Locate('title', AFile, []) then
+    Result:=True
+  else
+    Result:=False;
+end;
+
+function GetVFSDataURL: string;
+begin
+  Result:=doc_root+WebVFS.Strings['data'];
 end;
 
 initialization

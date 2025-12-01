@@ -4,10 +4,9 @@ object DatabaseForm: TDatabaseForm
   Top = 30
   Width = 762
   Caption = 'RabitHole Database Manager'
-  ClientHeight = 210
-  ClientWidth = 320
+  ClientHeight = 386
+  ClientWidth = 762
   Menu = MainMenu
-  LCLVersion = '4.2.0.0'
   OnResize = FormResize
   OnShow = FormShow
   object StatusBar: TStatusBar
@@ -138,7 +137,9 @@ object DatabaseForm: TDatabaseForm
         Items.Strings = (
           'Plain Text'
           'Directory'
-          'HTML'
+          'Binary File'
+          'Program'
+          'Markdown'
         )
         Style = csDropDownList
         TabOrder = 3

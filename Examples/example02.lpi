@@ -32,9 +32,6 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="RabitHole"/>
-      </Item>
-      <Item>
         <PackageName Value="rb6502"/>
       </Item>
     </RequiredPackages>

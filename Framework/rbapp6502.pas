@@ -5,7 +5,8 @@ unit rbapp6502;
 interface
 
 uses
-  Classes, SysUtils, rbapp, MOS6502, Memory6502, rom6502, CardSlots6502;
+  Classes, SysUtils, rtl.BrowserLoadHelper, rbapp, MOS6502, Memory6502, rom6502,
+  CardSlots6502, rbpage6502, rbvfs6502;
 
 type
 
@@ -17,6 +18,8 @@ type
     FMemory: T6502Memory;
     FROM: T6502ROM;
     FSlots: T6502CardSlots;
+    FPage: T6502RBPageOutput;
+    FVFS: T6502RBVFSCard;
   protected
     procedure DoRun; override;
     procedure DoFailure(aMessage: string); override;
@@ -24,6 +27,7 @@ type
     procedure VFSLoaded; override;
   public
     constructor Create(aOwner: TComponent); override;
+    procedure SetTabBody(target: string);
   end;
 
 implementation
@@ -70,7 +74,16 @@ begin
   F6502.ResetVector:=FROM.RST_VEC;
   F6502.HaltVector:=$fff0;
   FSlots:=T6502CardSlots.Create(Self);
+  FPage:=T6502RBPageOutput.Create(Self);
+  FVFS:=T6502RBVFSCard.Create(Self);
+  FSlots.Card[0]:=FPage;
+  FSlots.Card[6]:=FVFS;
   F6502.Device:=FSlots;
+end;
+
+procedure TRabitHole6502App.SetTabBody(target: string);
+begin
+  FPage.SetTabBody(target);
 end;
 
 end.

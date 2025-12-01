@@ -3,7 +3,7 @@ program example02;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, rbapp6502, rbpage;
+  BrowserApp, JS, Classes, SysUtils, Web, rbapp6502;
 
 type
 
@@ -21,7 +21,7 @@ var
 begin
   Application:=TExampleApp.Create(Nil);
   Application.Initialize;
-  SetTabBody('TabBody');
+  Application.SetTabBody('TabBody');
   Application.Run;
 end.
 
