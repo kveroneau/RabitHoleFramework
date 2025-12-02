@@ -39,6 +39,7 @@ implementation
 
 procedure TRabitHole6502App.DoRun;
 begin
+  EnableRouter:=False; // Ensure this is disabled, handled by a card.
   inherited DoRun;
   F6502.Active:=True;
 end;

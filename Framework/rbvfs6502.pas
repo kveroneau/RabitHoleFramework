@@ -5,7 +5,7 @@ unit rbvfs6502;
 interface
 
 uses
-  Classes, SysUtils, Card6502, rbvfs, marked, Web;
+  Classes, SysUtils, Card6502, rbvfs, marked, Web, webrouter;
 
 type
 
@@ -17,6 +17,7 @@ type
     FCurDir: string;
     FLoadText: boolean;
     procedure HandleVFS(data: string);
+    procedure HandleRoute(URL: String; aRoute: TRoute; Params: TStrings);
     procedure GetTypeInfo;
     procedure LoadTextFile(AFile: string);
     procedure FileLoaded(Sender: TObject);
@@ -24,6 +25,8 @@ type
     procedure LoadFile;
     procedure LoadVFSFile;
     procedure SetCurDirectory;
+    procedure CheckRoute;
+    procedure PushRoute;
   protected
     function GetCardType: byte; override;
   public
@@ -45,6 +48,13 @@ begin
     0: TJSHTMLElement(document.getElementById(GetStringPtr(4))).innerHTML:=data;
     4: TJSHTMLElement(document.getElementById(GetStringPtr(4))).innerHTML:=markdown(data);
   end;
+end;
+
+procedure T6502RBVFSCard.HandleRoute(URL: String; aRoute: TRoute;
+  Params: TStrings);
+begin
+  SysMemory.LoadString(URL+#0, GetWord($20));
+  IRQ;
 end;
 
 procedure T6502RBVFSCard.GetTypeInfo;
@@ -127,6 +137,25 @@ begin
   Memory[1]:=$00;
 end;
 
+procedure T6502RBVFSCard.CheckRoute;
+var
+  route: string;
+begin
+  route:=Router.RouteFromURL;
+  if route = '' then
+    Memory[1]:=0
+  else
+    Memory[1]:=$ff;
+  Memory[0]:=0;
+end;
+
+procedure T6502RBVFSCard.PushRoute;
+begin
+  Router.Push(GetStringPtr(2));
+  Memory[0]:=0;
+  Memory[1]:=0;
+end;
+
 function T6502RBVFSCard.GetCardType: byte;
 begin
   Result:=$d8;
@@ -140,6 +169,9 @@ begin
   SetInitVFSCallback(@HandleVFS);
   FCurDir:='FSRoot';
   FLoadText:=False;
+  Router.InitHistory(hkHash);
+  Router.RegisterRoute('/vfs/:wh/:file', @RouteVFS);
+  Router.RegisterRoute('/:path', @HandleRoute, True);
 end;
 
 procedure T6502RBVFSCard.CardRun;
@@ -154,6 +186,8 @@ begin
   if Assigned(FWebFile) then
     Exit;
   case op of
+    $40: PushRoute;
+    $41: CheckRoute;
     $d0: GetTypeInfo;
     $d1: SetCurDirectory;
     $d2: LoadVFSFile;
