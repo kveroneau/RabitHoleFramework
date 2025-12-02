@@ -8,7 +8,7 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)/"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
     <Description Value="Rabit Hole Framework Web6502 Integration Package"/>
@@ -25,6 +25,10 @@
       <Item>
         <Filename Value="rbvfs6502.pas"/>
         <UnitName Value="rbvfs6502"/>
+      </Item>
+      <Item>
+        <Filename Value="rbmodels6502.pas"/>
+        <UnitName Value="rbmodels6502"/>
       </Item>
     </Files>
     <RequiredPkgs>

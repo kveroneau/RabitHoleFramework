@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, rtl.BrowserLoadHelper, rbapp, MOS6502, Memory6502, rom6502,
-  CardSlots6502, rbpage6502, rbvfs6502;
+  CardSlots6502, rbpage6502, rbvfs6502, rbmodels6502;
 
 type
 
@@ -20,6 +20,7 @@ type
     FSlots: T6502CardSlots;
     FPage: T6502RBPageOutput;
     FVFS: T6502RBVFSCard;
+    FModels: T6502RBModelCard;
   protected
     procedure DoRun; override;
     procedure DoFailure(aMessage: string); override;
@@ -76,7 +77,13 @@ begin
   FSlots:=T6502CardSlots.Create(Self);
   FPage:=T6502RBPageOutput.Create(Self);
   FVFS:=T6502RBVFSCard.Create(Self);
+  FModels:=T6502RBModelCard.Create(Self);
+  FModels.SaveGlobals:=@SaveGlobals;
+  FModels.AddFlag:=@AddFlag;
+  FModels.DelFlag:=@DelFlag;
+  FModels.HasFlag:=@HasFlag;
   FSlots.Card[0]:=FPage;
+  FSlots.Card[1]:=FModels;
   FSlots.Card[6]:=FVFS;
   F6502.Device:=FSlots;
 end;

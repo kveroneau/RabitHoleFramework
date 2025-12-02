@@ -21,6 +21,7 @@ var
 begin
   Application:=TExampleApp.Create(Nil);
   Application.Initialize;
+  Application.SaveFlags:=True;
   Application.SetTabBody('TabBody');
   Application.Run;
 end.

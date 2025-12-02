@@ -15,6 +15,7 @@ type
   private
     FWebFile: TBytesStream;
     FCurDir: string;
+    FLoadText: boolean;
     procedure HandleVFS(data: string);
     procedure GetTypeInfo;
     procedure LoadTextFile(AFile: string);
@@ -22,6 +23,7 @@ type
     procedure LoadError(Sender: TObject; const AError: string);
     procedure LoadFile;
     procedure LoadVFSFile;
+    procedure SetCurDirectory;
   protected
     function GetCardType: byte; override;
   public
@@ -37,6 +39,7 @@ procedure T6502RBVFSCard.HandleVFS(data: string);
 var
   typ: Integer;
 begin
+  FLoadText:=False;
   typ:=GetVFSFileType;
   case typ of
     0: TJSHTMLElement(document.getElementById(GetStringPtr(4))).innerHTML:=data;
@@ -61,6 +64,7 @@ end;
 
 procedure T6502RBVFSCard.LoadTextFile(AFile: string);
 begin
+  FLoadText:=True;
   GetVFSFile(AFile, FCurDir, @HandleVFS);
 end;
 
@@ -116,6 +120,13 @@ begin
   end;
 end;
 
+procedure T6502RBVFSCard.SetCurDirectory;
+begin
+  FCurDir:=GetStringPtr(2);
+  Memory[0]:=$00;
+  Memory[1]:=$00;
+end;
+
 function T6502RBVFSCard.GetCardType: byte;
 begin
   Result:=$d8;
@@ -128,6 +139,7 @@ begin
   SetVFSDocRoot('vfs/');
   SetInitVFSCallback(@HandleVFS);
   FCurDir:='FSRoot';
+  FLoadText:=False;
 end;
 
 procedure T6502RBVFSCard.CardRun;
@@ -137,10 +149,13 @@ begin
   op:=Memory[0];
   if op = 0 then
     Exit;
+  if FLoadText then
+    Exit;
   if Assigned(FWebFile) then
     Exit;
   case op of
     $d0: GetTypeInfo;
+    $d1: SetCurDirectory;
     $d2: LoadVFSFile;
     $d4: LoadVFSFile;
     $d6: LoadVFSFile;
